@@ -92,7 +92,7 @@ namespace xmlparser
 
                     }
                 }
-                saveFileDialog1.Filter = "TXT files (*.txt)|*.txt";
+                saveFileDialog1.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
                 DialogResult dr = saveFileDialog1.ShowDialog();
                 if (dr == DialogResult.OK)
                 {
