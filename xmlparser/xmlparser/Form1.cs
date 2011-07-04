@@ -23,7 +23,7 @@ namespace xmlparser
             button5.Enabled = false;
             checkedListBox1.Items.Clear();
             List<string> attributes = new List<string>();
-            openFileDialog1.Filter = "XML files (*.xml)|*.xml";
+            openFileDialog1.Filter = "XML files (*.xml)|*.xml|All Files (*.*)|*.*";
             DialogResult dr = openFileDialog1.ShowDialog(this);
             if (dr == DialogResult.OK)
             {
