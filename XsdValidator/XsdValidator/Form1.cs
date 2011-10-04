@@ -21,28 +21,36 @@ namespace XsdValidator
 
         private void button1_Click(object sender, EventArgs e)
         {
-            XmlTextReader r = new XmlTextReader(@"C:\BPConnect xml xsd validation\xsdgen.xml");
-            XmlValidatingReader v = new XmlValidatingReader(r);
-            v.ValidationType = ValidationType.Schema;
-            v.ValidationEventHandler += new ValidationEventHandler(MyValidationEventHandler);
-            while (v.Read())
+            isValid = true;
+            XmlReaderSettings settings = new XmlReaderSettings();
+            settings.ValidationType = ValidationType.Schema;
+            //settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessInlineSchema;
+            settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessSchemaLocation;
+            settings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings;
+            settings.ValidationEventHandler += new ValidationEventHandler(ValidationCallBack);
+
+            // Create the XmlReader object.
+            XmlReader reader = XmlReader.Create(@"C:\BPConnect xml xsd validation\build.xml", settings);
+
+            // Parse the file. 
+            while (reader.Read() && isValid)
             {
-               // Can add code here to process the content.
+                // Can add code here to process the content.
             }
-            v.Close();
+            reader.Close();
 
             // Check whether the document is valid or invalid.
             if (isValid)
-               MessageBox.Show("Document is valid");
+                MessageBox.Show("Document is valid");
             else
                 MessageBox.Show("Document is invalid");
             
         }
 
-        public static void MyValidationEventHandler(object sender, System.Xml.Schema.ValidationEventArgs args)
+        public static void ValidationCallBack(object sender, System.Xml.Schema.ValidationEventArgs args)
         {
            isValid = false;
-           MessageBox.Show("Validation event\n" + args.Message);
+           MessageBox.Show("Validation event\n" + args.Message + " | " + args.Exception.LineNumber + args.Exception.LinePosition);
         }
     }
 }
